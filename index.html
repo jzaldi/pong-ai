@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="static/style/style.css">
+    </head>
+    <body>
+        <canvas height="800px" width="1296px"></canvas>
+
+        <script src="static/src/pong-components.js"></script>
+        <script src="static/src/pong-players.js"></script>
+        <script src="static/src/pong-game.js"></script>
+        <script src="static/src/pong-render.js"></script>
+        
+        <script>
+            var canvas = document.querySelector('canvas');
+            var game = new Game(canvas.width, canvas.height);
+            var renderer = new Renderer(game, canvas);
+            setInterval(function(){
+                game.step();
+                renderer.render();
+            }, 16);
+        </script>
+    
+    </body>
+</html>
