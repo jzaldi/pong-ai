@@ -3,21 +3,29 @@
         <link rel="stylesheet" type="text/css" href="static/style/style.css">
     </head>
     <body>
-        <canvas height="800px" width="1296px"></canvas>
 
+        <div class = "main-container">
+            <canvas height="800px" width="1296px"></canvas>
+            <div>
+            </div>
+        </div>
+        
+        <!--Imports de tensorflowjs-->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+
+        <!--Imports propios-->
         <script src="static/src/pong-components.js"></script>
         <script src="static/src/pong-players.js"></script>
         <script src="static/src/pong-game.js"></script>
         <script src="static/src/pong-render.js"></script>
         
+        <!--Main-->
         <script>
+
             var canvas = document.querySelector('canvas');
-            var game = new Game(canvas.width, canvas.height);
-            var renderer = new Renderer(game, canvas);
-            setInterval(function(){
-                game.step();
-                renderer.render();
-            }, 16);
+            var game = new InteractiveGame(canvas.width, canvas.height, canvas);
+
         </script>
     
     </body>

@@ -20,6 +20,8 @@ var Renderer = function(game, canvas){
         ball_color: '#eeeeee',
         score_font: '30px Courier New',
         score_color: '#eeeeee',
+        state_font: '30px Courier New',
+        state_color: '#eeeeee',
     }
 
     /**
@@ -30,6 +32,7 @@ var Renderer = function(game, canvas){
         this.render_ball();
         this.render_paddles();
         this.render_score();
+        this.render_state();
     }
 
     /**
@@ -52,8 +55,8 @@ var Renderer = function(game, canvas){
 
         this.context.beginPath();
 		this.context.setLineDash([7, 15]);
-		this.context.moveTo((board.width / 2), board.height - 140);
-		this.context.lineTo((board.width / 2), 140);
+		this.context.moveTo((board.width / 2), 0.85 * board.height);
+		this.context.lineTo((board.width / 2), 0.15 * board.height);
 		this.context.lineWidth = this.style.line_width;
 		this.context.strokeStyle = this.style.line_color;
 		this.context.stroke();
@@ -100,8 +103,43 @@ var Renderer = function(game, canvas){
 
         var winner = (game.score > 0)? "P1" : (game.score < 0)? "P2" : "Draw";
         var msg = "Score: " + Math.abs(game.score).toString() + " " + winner;
+        var txt_size = this.context.measureText(msg);
 
-        this.context.fillText(msg, 0.5 * board.width - 110, 0.08 * board.height);
+        this.context.fillText(msg, 
+            0.5 * board.width - txt_size.width / 2, 
+            0.08 * board.height
+        );
+    }
+
+    /**
+     * Pinta el mensaje de continuar si el juego está parado.
+     */
+    this.render_state = function(){
+        if(game.running) return;
+
+        var p1 = game.player_1;
+        var p2 = game.player_2;
+
+
+        var board = game.environment.board;
+        this.context.font = this.style.state_font;
+        this.context.fillStyle = this.style.state_color;
+        
+        this.render_player(p1, 0.25 * board.width)
+        this.render_player(p2, 0.75 * board.width)
+    }
+
+    this.render_player = function(p1, offset){
+        var board = game.environment.board;
+        var waiting_msg = (p1.class == "Human")? "Press spacebar to continue":
+            "Training...";
+        var msg = (p1.ready)? "Ready": waiting_msg;
+        var txt_size = this.context.measureText(msg);
+        this.context.fillText(
+            msg, 
+            offset - txt_size.width / 2, 
+            0.25 * board.height
+        );
     }
 
 }

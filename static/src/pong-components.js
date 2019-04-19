@@ -59,7 +59,7 @@ var Paddle = function(x, y, orientation, length, width){
         if(this.is_within_x(ball) && this.is_within_y(ball)){
             ball.x = this.x;
             ball.ux = -ball.ux;
-            return Math.abs(ball.ux) / ball.ux * this.orientation;
+            return (Math.sign(ball.ux) == this.orientation)? this.orientation: 0;
         }
         return 0;
     }
@@ -154,6 +154,7 @@ var Board = function(width, height){
      * @param {Paddle} paddle Pala.
      */
     this.interact_paddle = function(paddle){
+        var value = 0;
         if(paddle.y + paddle.length / 2 > this.height){
             paddle.y = this.height - paddle.length / 2;
         }
@@ -176,8 +177,10 @@ var Board = function(width, height){
  * @param {number} width 
  * @param {number} height 
  */
-var Environment = function(width, height){
+var Environment = function(width, height, ball_speed, paddle_sensibility){
     
+    ball_speed = ball_speed || 8;
+    paddle_sensibility = paddle_sensibility || 20;
     // Instancio los elementos del entorno.
     this.board = new Board(width, height);
     this.ball = new Ball(width * 0.5, height * 0.5, height * 0.015);
@@ -190,13 +193,32 @@ var Environment = function(width, height){
 
     /**
      * Ejecuta un paso temporal.
+     * @returns Boolean indicando si el episodio ha terminado.
      */
     this.time_step = function(){
-        this.ball.update(8);
+        this.ball.update(ball_speed);
+        var reward =  this.board.interact(
+            this.ball, this.paddle_left, this.paddle_right);
+        this.reward = reward;
         this.paddle_left.interact(this.ball);
         this.paddle_right.interact(this.ball);
-        this.reward = this.board.interact(
-            this.ball, this.paddle_left, this.paddle_right);
+        return reward != 0;
+    }
+
+    /**
+     * Resetea el entorno a su estado inicial. Usado cuando termina una partida.
+     */
+    this.reset = function(){
+        
+        this.ball.x = this.ball.x_0 = width * 0.5;
+        this.ball.y = this.ball.y_0 = height * 0.5;
+        this.ball.ux = (Math.random() > 0.5)? 1 : -1;
+        this.ball.uy = (Math.random() > 0.5)? 1 : -1;;
+
+        this.paddle_left.y = this.paddle_left.y_0 = height * 0.5;
+        this.paddle_right.y = this.paddle_right.y_0 = height * 0.5;
+        
+        this.reward = 0;
     }
 
 }
