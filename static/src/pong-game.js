@@ -57,7 +57,7 @@ var InteractiveGame = function(width, height, canvas){
     var game = new Game(width, height);
 
     // Instancio los jugadores.
-    game.player_1 = new HumanPlayer(paddle_left, paddle_right, game.environment);
+    game.player_1 = new AIPlayer(paddle_left, paddle_right, game.environment);
     game.player_2 = new AIPlayer(paddle_right, paddle_left, game.environment);
 
     game.running = false; // Esta el juego activo?

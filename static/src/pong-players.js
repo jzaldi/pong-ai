@@ -74,7 +74,7 @@ var BasePlayer = function(paddle, opponent, environment, sensibility){
     this.get_reward = function(){
         //return paddle.orientation * environment.reward;
         var reward = paddle.orientation * environment.reward;
-        //if (reward != 0) 
+        //if (Math.sign(environment.ball.ux) != Math.sign(paddle.orientation)) 
             reward += -Math.abs(paddle.y - ball.y) / board.height;
         return  reward;
     }
