@@ -4,7 +4,7 @@ html, body {
 }
 
 .main-container {
-    padding: 0;
+    padding: 50px;
     margin: auto;
     display: block;
 }
