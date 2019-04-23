@@ -13,7 +13,7 @@ var BasePlayer = function(paddle, opponent, environment, sensibility){
     this.class = "Base";
     this.ready = true; // Indica si el jugador está listo para empezar a jugar.
 
-    this.sensibility = sensibility || 20;
+    this.sensibility = sensibility || 30;
 
     this.memory = []; // Memoria para almacenar las jugadas.
     this.max_memory = 1000000; // Limite máximo a la memoria para que no casque.
