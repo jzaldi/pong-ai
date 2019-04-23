@@ -180,7 +180,7 @@ var Board = function(width, height){
 var Environment = function(width, height, ball_speed, paddle_sensibility){
     
     ball_speed = ball_speed || 8;
-    paddle_sensibility = paddle_sensibility || 20;
+    paddle_sensibility = paddle_sensibility || 30;
     // Instancio los elementos del entorno.
     this.board = new Board(width, height);
     this.ball = new Ball(width * 0.5, height * 0.5, height * 0.015);
